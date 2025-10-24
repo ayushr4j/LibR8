@@ -1,0 +1,69 @@
+cmake_minimum_required(VERSION 3.28)
+project(ModTest CXX)
+
+set(CMAKE_CXX_STANDARD 20)
+set(CMAKE_CXX_EXTENSIONS OFF)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_SCAN_FOR_MODULES ON)
+
+set(MODULE_OUTPUT_DIR "${workspaceFolder}/modules")
+set(ARCHIVE_OUTPUT_DIRECTORY "${workspaceFolder}/lib")
+set(LIBRARY_OUTPUT_DIRECTORY "${workspaceFolder}/lib")
+set(RUNTIME_OUTPUT_DIRECTORY "${workspaceFolder}/bin")
+
+#add_compile_definitions(_ALLOW_COMPILER_AND_STL_VERSION_MISMATCH)
+
+
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++20 -stdlib=libc++ -fprebuilt-module-path=${workspaceFolder}/module")
+set(CLANG_MODULE_FLAGS -std=c++20 -stdlib=libc++ -Xclang -emit-module --precompile -fprebuilt-module-path=${workspaceFolder}/module)
+
+add_library(base OBJECT)
+target_sources(
+    base PUBLIC
+    base/coroutine.cpp
+)
+
+
+
+
+
+
+if(False)
+
+add_library(log)
+
+
+target_sources(log
+  PUBLIC
+  FILE_SET CXX_MODULES
+        FILES log.cppm
+)
+
+# Compile base module interface to BMI
+add_custom_command(
+    OUTPUT ${CMAKE_BINARY_DIR}/base.pcm
+    COMMAND clang++ ${CLANG_MODULE_FLAGS}  ${CMAKE_SOURCE_DIR}/base.cppm -o base.pcm
+    DEPENDS ${CMAKE_SOURCE_DIR}/base.cppm
+)
+
+# Compile base.cppm -> base.o
+add_custom_command(
+    OUTPUT ${CMAKE_BINARY_DIR}/base.o
+    COMMAND clang++ ${CLANG_MODULE_FLAGS} -c ${CMAKE_SOURCE_DIR}/base.cppm -o base.o
+    DEPENDS ${CMAKE_SOURCE_DIR}/base.cppm ${CMAKE_BINARY_DIR}/base.pcm
+)
+
+add_custom_target(base_mod ALL DEPENDS ${CMAKE_BINARY_DIR}/base.o)
+
+# Compile log.cppm -> log.o (depends on base.pcm)
+add_custom_command(
+    OUTPUT ${CMAKE_BINARY_DIR}/log.o
+    COMMAND clang++ ${CLANG_MODULE_FLAGS} -c ${CMAKE_SOURCE_DIR}/log.cppm -o log.o
+    DEPENDS ${CMAKE_SOURCE_DIR}/log.cppm ${CMAKE_BINARY_DIR}/base.pcm
+)
+
+add_custom_target(log_mod ALL DEPENDS ${CMAKE_BINARY_DIR}/log.o)
+
+# Build main
+
+endif()
