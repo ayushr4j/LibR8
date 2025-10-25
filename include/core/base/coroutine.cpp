@@ -6,12 +6,8 @@
 namespace AR4J {
 
    
-    
-
-    
-
     template<typename t>
-    class Task{
+    class Coroutine{
     public:
         
         struct promise;
@@ -20,7 +16,7 @@ namespace AR4J {
             
         struct promise{
             t value_;
-            Task<t> get_return_object() { return {handle_type::from_promise(*this)}; }
+            Coroutine<t> get_return_object() { return {handle_type::from_promise(*this)}; }
             std::suspend_always initial_suspend() noexcept { return {}; }
             std::suspend_always final_suspend() noexcept { return {}; }
             void return_void() {}
@@ -36,7 +32,7 @@ namespace AR4J {
 
         handle_type h_;
 
-        Task(handle_type h) : h_(h){}
+        Coroutine(handle_type h) : h_(h){}
 
 
     };
@@ -44,7 +40,7 @@ namespace AR4J {
     
 
 
-    Task<int> test(){
+    Coroutine<int> test(){
 
         co_yield 1;
 
