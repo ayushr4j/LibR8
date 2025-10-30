@@ -34,6 +34,12 @@ target_sources(memory PUBLIC
 )
 
 
+add_library(type STATIC)
+target_sources(type PUBLIC 
+    src/core/type/reference.cpp
+)
+
+
 
 
 if(False)
