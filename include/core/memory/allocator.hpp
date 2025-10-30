@@ -11,10 +11,10 @@ namespace ar4j
 
         class Memory;
         
-        /**
-         * @brief Allocates Contiguous Memory Segments and returns a Reference to it.
-         * 
-         */
+       
+
+        /// @brief Allocates Contiguous Memory Segments and returns a Reference to it.
+        /// \todo implement segmented allocations to be used for complex memory operation
         class Allocator{
         protected:
 
