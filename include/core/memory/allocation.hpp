@@ -1,7 +1,12 @@
 #ifndef AR4J_MEMORY_ALLOCATOR_ALLOCATION
 #define AR4J_MEMORY_ALLOCATOR_ALLOCATION
 
+
 #include "./allocator.hpp"
+
+#include <stddef.h>
+#include <stdint.h>
+#include <atomic>
 
 namespace ar4j
 {
@@ -13,28 +18,31 @@ namespace ar4j
                 /// @brief allocator that was used to allocate this Allocation
                 Allocator* alloc = nullptr;   
 
+                
+
                 /// size is the required size of allocation (excluding any padding, header).
                 /// alignment is the alignment requirement for this Allocation. this might be used when moving this memory to other location.
                 size_t size, alignment = 1;
 
                 /// raw holds the raw allocated space of this allocation. after which Memory Segment resides (may be padded to meet alignment requirement). data refers to address in this memory which fulfils given alignment requirment and is size bytes.
-                void *data, *raw;   
+                uint8_t *data, *raw;   
 
                 /// stores number of references created for this memory. help in automatic garbage collection
                 std::atomic<size_t> referenceCount = 0;
 
+                
                 Allocation(){};
 
+                /// @brief Returns Memory Object for this allocation. also increases refrecene count for the allocation
+                /// @param offset offset from which this reference starts
+                /// @param size size of memory for this reference.
+                /// @return 
+                Memory getReference(size_t offset, size_t size);
+                
+                void releaseReference(Memory&);
 
-                Segment getReference(size_t offset, size_t size);
-                void releaseReference();
-
-                friend class Segment;
+                friend class Memory;
                 friend class Allocator;
-
-
-                virtual Segment operator&();
-                virtual const Segment operator&() const;
 
         };
 
