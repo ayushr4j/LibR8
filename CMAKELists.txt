@@ -4,7 +4,8 @@ project(ModTest CXX)
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_EXTENSIONS OFF)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
-set(CMAKE_CXX_SCAN_FOR_MODULES ON)
+
+
 
 set(MODULE_OUTPUT_DIR "${workspaceFolder}/modules")
 set(ARCHIVE_OUTPUT_DIRECTORY "${workspaceFolder}/lib")
@@ -13,17 +14,25 @@ set(RUNTIME_OUTPUT_DIRECTORY "${workspaceFolder}/bin")
 
 #add_compile_definitions(_ALLOW_COMPILER_AND_STL_VERSION_MISMATCH)
 
-
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++20 -stdlib=libc++ -fprebuilt-module-path=${workspaceFolder}/module")
-set(CLANG_MODULE_FLAGS -std=c++20 -stdlib=libc++ -Xclang -emit-module --precompile -fprebuilt-module-path=${workspaceFolder}/module)
-
-add_library(base OBJECT)
-target_sources(
-    base PUBLIC
-    base/coroutine.cpp
+include_directories(
+    include/
+    src/
 )
 
 
+add_library(base STATIC)
+target_sources(
+    base PUBLIC
+    include/core/base/coroutine.cpp
+)
+
+add_library(memory STATIC)
+target_sources(memory PUBLIC 
+    src/core/memory/allocator.cpp
+    src/core/memory/allocation.cpp
+    src/core/memory/segment.cpp
+    src/core/memory/memory.cpp
+)
 
 
 
