@@ -29,16 +29,7 @@ namespace ar4j
 
     };
 
-    
-
-    Reference<A> ref;
-    
-
-    
-
-
-
-    
+        
             
 } // namespace ar4j
 

@@ -32,7 +32,7 @@ namespace ar4j
         };
     }
 
-    
+    typedef memory::Memory Memory;
     
    
     
