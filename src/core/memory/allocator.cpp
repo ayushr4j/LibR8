@@ -4,6 +4,7 @@
 #include "core/memory/allocator.hpp"
 #include "core/memory/memory.hpp"
 #include "stddef.h"
+#include <new>
 
 using namespace ar4j::memory;
 

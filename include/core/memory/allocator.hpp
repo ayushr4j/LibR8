@@ -1,11 +1,11 @@
 #ifndef AR4J_MEMORY_ALLOCATOR
 #define AR4J_MEMORY_ALLOCATOR
 
+#include <stddef.h>
+
 namespace ar4j
 {
 
-    
-    
     namespace memory
     {
 

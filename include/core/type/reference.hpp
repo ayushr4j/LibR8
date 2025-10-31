@@ -19,20 +19,17 @@ namespace ar4j
 
     template<typename t>
     class Reference{
-        static t dummy;
+        
         template<typename R>
         Reference<R> operator->();
 
+        template<typename R>
+        Reference<R> operator->*(R t::*member);
+
+
     };
 
-    template<typename T>
-    template<typename t >
-    Reference<t> Reference<T>::operator->(){
-        if constexpr (std::is_pointer_v<R>)
-            return dummy;  // R is pointer type
-        else
-            return Reference<t>{};
-    }
+    
 
     Reference<A> ref;
     
